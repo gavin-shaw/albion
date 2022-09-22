@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: app
+      app: api
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
