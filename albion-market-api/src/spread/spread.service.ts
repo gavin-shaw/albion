@@ -6,6 +6,7 @@ import { MarketHistoryRepository } from '../market-history/entities/market-histo
 import { MarketOrderRepository } from '../market-order/entities/market-order.repository';
 import { MarketItemSpread } from './domain/market-item-spread';
 import itemNames from './fixture/items.json';
+import locationNames from './fixture/world.json';
 
 const maxBuyPrice = 100000;
 const minSpreadPc = 20;
@@ -19,6 +20,8 @@ export class SpreadService {
   ) {}
 
   async calculateSpreads(): Promise<MarketItemSpread[]> {
+    var startTime = performance.now();
+
     const itemNamesMap = _(itemNames)
       .groupBy('UniqueName')
       .mapValues((values) => {
@@ -28,6 +31,16 @@ export class SpreadService {
         return values[0]['LocalizedNames']['EN-US'];
       })
       .value();
+
+      const locationNamesMap = _(locationNames)
+      .groupBy('Index')
+      .mapValues((values) => {
+        if (!values[0]['UniqueName']) {
+          return null;
+        }
+        return values[0]['UniqueName'];
+      })
+      .value();      
 
     const query = this.marketOrderRepository
       .createQueryBuilder('order')
@@ -48,11 +61,15 @@ export class SpreadService {
 
     const marketOrders = await query.getRawMany();
 
+    console.log(`1 - ${performance.now() - startTime}`);
+
+    console.log(marketOrders.length);
+
     const items = _.chain(marketOrders)
       .map((rawOrder) => {
         const marketOrderGroup: MarketOrderGroup = {
-          id: `${rawOrder['location']}-${rawOrder['order_item_id']}-${rawOrder['order_quality_level']}`,
-          location: rawOrder['location'],
+          id: `${rawOrder['order_location']}-${rawOrder['order_item_id']}-${rawOrder['order_quality_level']}`,
+          location: rawOrder['order_location'],
           itemId: rawOrder['order_item_id'],
           qualityLevel: rawOrder['order_quality_level'],
           auctionType: rawOrder['order_auction_type'],
@@ -95,13 +112,20 @@ export class SpreadService {
       .orderBy(['spreadPc'], ['desc'])
       .value();
 
+    console.log(items.length);
+
+    console.log(`2 - ${performance.now() - startTime}`);
+
     const latestSale = await this.marketHistoryRepository
       .find({
+        take: 1,
         order: {
           timestamp: -1,
         },
       })
       .then((results) => results[0]);
+
+    console.log(`3 - ${performance.now() - startTime}`);
 
     const sales = await _(items)
       .map((it) => it.itemId)
@@ -116,6 +140,9 @@ export class SpreadService {
       })
       .thru((promises) => Promise.all(promises).then((them) => _.flatMap(them)))
       .value();
+
+    console.log(sales.length);      
+    console.log(`4 - ${performance.now() - startTime}`);
 
     const salesMap = _(sales)
       .map((sale) => ({
@@ -140,6 +167,8 @@ export class SpreadService {
       }))
       .value();
 
+    console.log(`5 - ${performance.now() - startTime}`);
+
     const results = _(items)
       .filter((item) => item.spreadPc > minSpreadPc)
       .map((item) => {
@@ -156,6 +185,7 @@ export class SpreadService {
         return {
           ...item,
           ...saleData,
+          location: locationNamesMap[item.location] ?? item.location,
           name: itemNamesMap[item.itemId],
         };
       })
@@ -164,8 +194,12 @@ export class SpreadService {
         (it) =>
           (it.minPrice - it.maxRequest) / (it.minOffer - it.maxRequest) < 0.4,
       )
-      .orderBy('count')
+      .orderBy('historyCount')
       .value();
+
+    console.log(`6 - ${performance.now() - startTime}`);
+
+    console.log(results.length);
 
     return results;
   }

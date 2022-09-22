@@ -28,6 +28,6 @@ export class SpreadController {
       const models = await this.spreadService.calculateSpreads();
 
       return models.map((model) => MarketItemSpreadDto.fromModel(model));
-    });
+    }, {ttl: 0});
   }
 }
