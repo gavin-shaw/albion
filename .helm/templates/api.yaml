@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-deploy
+spec:
+  selector:
+    matchLabels:
+      app: app
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: nestjs
+          image: '{{ .Values.werf.image.api }}'
+          workingDir: /home/node
+          env:
+            - name: MYSQL_HOST
+              value: '{{ .Release.Name }}-mysql-headless'
+            - name: MYSQL_PWD
+              value: '{{ .Values.mysql.auth.rootPassword }}'            
+            - name: MYSQL_PORT
+              value: '3306'   
+          ports:
+            - containerPort: 3001
+              protocol: TCP

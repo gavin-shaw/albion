@@ -1,0 +1,7 @@
+mysql:
+  primary:
+    persistence:
+      size: 48Gi
+    resources:
+      limits:
+        memory: 8Gi

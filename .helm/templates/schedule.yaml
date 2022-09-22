@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sync
+spec:
+  schedule: "0 3 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            job: sync
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: python
+              image: "{{ .Values.werf.image.sync }}"
+              workingDir: /data
+              env:
+                - name: MYSQL_HOST
+                  value: '{{ .Release.Name }}-mysql-headless'
+                - name: MYSQL_PWD
+                  value: '{{ .Values.mysql.auth.rootPassword }}'
+

@@ -1,0 +1,10 @@
+configVersion: 1
+project: albion-market
+---
+image: sync
+dockerfile: Dockerfile
+context: ./sync
+---
+image: api
+dockerfile: Dockerfile
+context: ./albion-market-api
