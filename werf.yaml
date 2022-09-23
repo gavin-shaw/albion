@@ -8,3 +8,7 @@ context: ./sync
 image: api
 dockerfile: Dockerfile
 context: ./albion-market-api
+---
+image: web
+dockerfile: Dockerfile
+context: ./albion-market-web

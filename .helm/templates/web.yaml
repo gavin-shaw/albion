@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-web-deploy
+spec:
+  selector:
+    matchLabels:
+      app: web
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nextjs
+          image: '{{ .Values.werf.image.web }}'
+          workingDir: /app
+          env:
+            - name: BACKEND_URL
+              value: '{{ .Release.Name }}-api-service'
+          ports:
+            - containerPort: 3001
+              protocol: TCP
