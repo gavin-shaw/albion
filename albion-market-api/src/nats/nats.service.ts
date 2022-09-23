@@ -38,7 +38,7 @@ export class NatsService {
       let enchantmentLevel = 0;
       let itemId = data.AlbionIdString;
       if (!itemId) {
-        continue
+        continue;
       }
       if (itemId.includes('@')) {
         enchantmentLevel = Number(itemId.split('@')[1]);
@@ -62,11 +62,14 @@ export class NatsService {
       entities.push(entity);
     }
 
-    await this.marketHistoryRepository.save(entities);
-
-    console.log(
-      `Saved History: ${data.AlbionIdString} - ${data.Timescale} - ${data.MarketHistories.length}`,
-    );
+    try {
+      await this.marketHistoryRepository.save(entities);
+      console.log(
+        `Saved History: ${data.AlbionIdString} - ${data.Timescale} - ${data.MarketHistories.length}`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private async saveMarketOrder(data: MarketOrderDto) {
