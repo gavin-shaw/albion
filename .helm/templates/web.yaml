@@ -23,5 +23,5 @@ spec:
             - name: BACKEND_URL
               value: '{{ .Release.Name }}-api-service'
           ports:
-            - containerPort: 3001
+            - containerPort: 3000
               protocol: TCP
