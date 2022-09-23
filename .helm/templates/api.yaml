@@ -28,6 +28,12 @@ spec:
               value: '3306'   
             - name: REDIS_HOST
               value: '{{ .Release.Name }}-redis-master'
+            - name: ALBION_NATS_HOST
+              value: www.albion-online-data.com:4222
+            - name: ALBION_NATS_USER
+              value: public
+            - name: ALBION_NATS_PASS
+              value: thenewalbiondata              
           ports:
             - containerPort: 3001
               protocol: TCP
