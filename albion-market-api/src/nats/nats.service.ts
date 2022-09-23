@@ -37,6 +37,9 @@ export class NatsService {
     for (const row of data.MarketHistories) {
       let enchantmentLevel = 0;
       let itemId = data.AlbionIdString;
+      if (!itemId) {
+        continue
+      }
       if (itemId.includes('@')) {
         enchantmentLevel = Number(itemId.split('@')[1]);
         itemId = itemId.split('@')[0];
