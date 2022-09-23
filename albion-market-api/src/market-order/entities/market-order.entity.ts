@@ -1,33 +1,32 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'market_orders' })
 export class MarketOrderEntity {
   @PrimaryColumn()
-  id: number;
-  @Column()
-  albionId: number;
+  id: string;
+  @Index()
   @Column({ nullable: true })
   itemId: string;
+  @Index()
   @Column({ nullable: true })
   qualityLevel: number;
+  @Index()
   @Column({ nullable: true })
   enchantmentLevel: number;
   @Column({ nullable: true })
   price: number;
   @Column({ nullable: true })
-  initialAmount: number;
-  @Column({ nullable: true })
   amount: number;
+  @Index()
   @Column({ nullable: true })
   auctionType: string;
-  @Column({ type: 'datetime' })
-  expires: Date;
+  @Index()
   @Column()
-  location: number;
+  locationId: number;
+  @Index()
   @Column({ type: 'datetime' })
   createdAt: Date;
+  @Index()
   @Column({ type: 'datetime' })
   updatedAt: Date;
-  @Column({ type: 'datetime' })
-  deletedAt: Date;
 }

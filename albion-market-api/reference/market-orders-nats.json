@@ -1,0 +1,12 @@
+{
+  "Id": 9439300849,
+  "ItemTypeId": "T3_FURNITUREITEM_TROPHY_GENERAL",
+  "LocationId": 4301,
+  "QualityLevel": 1,
+  "EnchantmentLevel": 0,
+  "UnitPriceSilver": 6,
+  "Amount": 208,
+  "AuctionType": "offer",
+  "Expires": "2022-10-23T04:30:59.394291",
+  "ItemGroupTypeId": "T3_FURNITUREITEM_TROPHY_GENERAL"
+}

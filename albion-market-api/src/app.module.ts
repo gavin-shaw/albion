@@ -7,6 +7,7 @@ import { MarketHistoryModule } from './market-history/market-history.module';
 import { MarketOrderModule } from './market-order/market-order.module';
 import { SharedModule } from './shared/shared.module';
 import { SpreadModule } from './spread/spread.module';
+import { NatsModule } from './nats/nats.module';
 
 @Module({
   imports: [
@@ -26,11 +27,13 @@ import { SpreadModule } from './spread/spread.module';
         database: 'albion',
         autoLoadEntities: true,
         namingStrategy: new SnakeNamingStrategy(),
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
     SpreadModule,
     SharedModule,
+    NatsModule,
   ],
 })
 export class AppModule {}

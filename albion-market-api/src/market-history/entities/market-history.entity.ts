@@ -1,21 +1,29 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'market_history' })
 export class MarketHistoryEntity {
   @PrimaryColumn()
-  id: number;
+  id: string;
   @Column()
   itemAmount: number;
   @Column()
   silverAmount: number;
+  @Index()
   @Column()
   itemId: string;
+  @Index()
   @Column()
-  location: number;
+  enchantmentLevel: number;
+  @Index()
   @Column()
-  quality: number;
+  locationId: number;
+  @Index()
+  @Column()
+  qualityLevel: number;
+  @Index()
   @Column({ type: 'datetime' })
   timestamp: Date;
-  @Column()
-  aggregation: number;
+  @Index()
+  @Column({ type: 'datetime' })
+  createdAt: Date;
 }

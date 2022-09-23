@@ -109,7 +109,7 @@ export class SpreadService {
     return _(sales)
       .map((sale) => ({
         ...sale,
-        id: `${sale.location}-${sale.itemId}-${sale.quality}`,
+        id: `${sale.locationId}-${sale.itemId}-${sale.qualityLevel}`,
       }))
       .groupBy('id')
       .mapValues((values, key) => ({
