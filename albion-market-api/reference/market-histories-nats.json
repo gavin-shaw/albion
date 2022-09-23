@@ -1,0 +1,134 @@
+{
+  "AlbionId": 3140,
+  "AlbionIdString": "T6_ARMOR_LEATHER_SET3@1",
+  "LocationId": 3005,
+  "QualityLevel": 4,
+  "Timescale": 0,
+  "MarketHistories": [
+    {
+      "ItemAmount": 3,
+      "SilverAmount": 230688,
+      "Timestamp": 637995060000000000
+    },
+    {
+      "ItemAmount": 6,
+      "SilverAmount": 491734,
+      "Timestamp": 637995024000000000
+    },
+    {
+      "ItemAmount": 7,
+      "SilverAmount": 573896,
+      "Timestamp": 637994988000000000
+    },
+    {
+      "ItemAmount": 5,
+      "SilverAmount": 394635,
+      "Timestamp": 637994952000000000
+    },
+    {
+      "ItemAmount": 2,
+      "SilverAmount": 163978,
+      "Timestamp": 637994916000000000
+    },
+    {
+      "ItemAmount": 8,
+      "SilverAmount": 655937,
+      "Timestamp": 637994880000000000
+    },
+    {
+      "ItemAmount": 2,
+      "SilverAmount": 163967,
+      "Timestamp": 637994844000000000
+    },
+    {
+      "ItemAmount": 7,
+      "SilverAmount": 526284,
+      "Timestamp": 637994808000000000
+    },
+    {
+      "ItemAmount": 4,
+      "SilverAmount": 346071,
+      "Timestamp": 637994772000000000
+    },
+    {
+      "ItemAmount": 6,
+      "SilverAmount": 497303,
+      "Timestamp": 637994736000000000
+    },
+    {
+      "ItemAmount": 8,
+      "SilverAmount": 633901,
+      "Timestamp": 637994700000000000
+    },
+    {
+      "ItemAmount": 9,
+      "SilverAmount": 757782,
+      "Timestamp": 637994664000000000
+    },
+    {
+      "ItemAmount": 8,
+      "SilverAmount": 696003,
+      "Timestamp": 637994628000000000
+    },
+    {
+      "ItemAmount": 9,
+      "SilverAmount": 781925,
+      "Timestamp": 637994592000000000
+    },
+    {
+      "ItemAmount": 8,
+      "SilverAmount": 685630,
+      "Timestamp": 637994556000000000
+    },
+    {
+      "ItemAmount": 5,
+      "SilverAmount": 414406,
+      "Timestamp": 637994520000000000
+    },
+    {
+      "ItemAmount": 8,
+      "SilverAmount": 695435,
+      "Timestamp": 637994484000000000
+    },
+    {
+      "ItemAmount": 5,
+      "SilverAmount": 414069,
+      "Timestamp": 637994448000000000
+    },
+    {
+      "ItemAmount": 3,
+      "SilverAmount": 260831,
+      "Timestamp": 637994412000000000
+    },
+    {
+      "ItemAmount": 2,
+      "SilverAmount": 153644,
+      "Timestamp": 637994376000000000
+    },
+    {
+      "ItemAmount": 1,
+      "SilverAmount": 86945,
+      "Timestamp": 637994340000000000
+    },
+    {
+      "ItemAmount": 2,
+      "SilverAmount": 133366,
+      "Timestamp": 637994304000000000
+    },
+    {
+      "ItemAmount": 1,
+      "SilverAmount": 86996,
+      "Timestamp": 637994268000000000
+    },
+    {
+      "ItemAmount": 3,
+      "SilverAmount": 220327,
+      "Timestamp": 637994232000000000
+    },
+    {
+      "ItemAmount": 2,
+      "SilverAmount": 173989,
+      "Timestamp": 637994196000000000
+    }
+  ]
+}
