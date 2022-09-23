@@ -12,4 +12,5 @@ export type MarketItemSpread = Readonly<{
   spread: number;
   spreadPc: number;
   location: string;
+  updated: number;
 }>;

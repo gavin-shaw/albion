@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import Home from "../components/Home";
-import { SpreadDto } from "../services/dto/spread.dto";
+import HomeDataGrid from "../components/HomeDataGrid";
 
 const HomePage: NextPage = () => {
-  return <Home />;
+  return <HomeDataGrid />;
 };
 
 export default HomePage;

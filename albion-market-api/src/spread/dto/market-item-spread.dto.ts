@@ -14,6 +14,7 @@ export class MarketItemSpreadDto {
   readonly spread: number;
   readonly spreadPc: number;
   readonly location: string;
+  readonly updated: number;
 
   static fromModel(model: MarketItemSpread): MarketItemSpreadDto {
     return {

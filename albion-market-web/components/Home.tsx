@@ -3,6 +3,13 @@ import { useEffect, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { getSpread } from "../services/backend-service";
 import { SpreadDto } from "../services/dto/spread.dto";
+import _ from "lodash";
+import moment from "moment";
+
+type ColumnOptions = {
+  name?: string;
+  format?: (value: any) => string;
+};
 
 const Home: NextPage = () => {
   const [spreads, setSpreads] = useState<SpreadDto[]>([]);
@@ -16,32 +23,42 @@ const Home: NextPage = () => {
     });
   }, []);
 
-  function column(
-    id: string,
-    name?: string,
-    format?: any
-  ): TableColumn<SpreadDto> {
-    return {
+  function column(id: string, options?: ColumnOptions): TableColumn<SpreadDto> {
+    // @ts-ignore
+    const selector = (row: SpreadDto) => row[id];
+
+    const columnDef: TableColumn<SpreadDto> = {
       id,
-      name: name ?? id,
-      // @ts-ignore
-      selector: (row: SpreadDto) => row[id],
-      format,
+      name: options?.name ?? _.startCase(id),
+      selector,
+      sortable: true,
     };
+
+    if (options?.format) {
+      // @ts-ignore
+      columnDef.format = (row: SpreadDto) => options.format(selector(row));
+    }
+
+    return columnDef;
   }
 
   const columns = [
+    column("location"),
     column("name"),
-    column("qualityLevel", "quality"),
-    column("minOffer", "offer"),
-    column("maxRequest", "request"),
-    column("spreadPc", "spread", (row: SpreadDto) => `${Math.floor(row.spreadPc)} %`),
-    column("historyCount", "history count"),
+    column("qualityLevel"),
+    column("minOffer", { format: (value) => value.toLocaleString() }),
+    column("maxRequest", { format: (value) => value.toLocaleString() }),
+    column("spread", { format: (value) => value.toLocaleString() }),
+    column("spreadPc", {
+      format: (value) => `${Math.floor(value)} %`,
+    }),
+    column("historyCount"),
+    column("updated", {format: (value) => moment.unix(value).fromNow()}),
   ];
 
   const data = spreads;
 
-  return <DataTable columns={columns} data={data} />;
+  return <DataTable columns={columns} data={data} defaultSortFieldId="historyCount" defaultSortAsc={false} />;
 };
 
 export interface HomeProps {

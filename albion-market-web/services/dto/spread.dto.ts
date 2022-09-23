@@ -1,5 +1,6 @@
 export interface SpreadDto {
   readonly avgPrice: number;
+  readonly location: string;
   readonly historyCount: number;
   readonly id: string;
   readonly itemId: string;
@@ -11,4 +12,5 @@ export interface SpreadDto {
   readonly qualityLevel: number;
   readonly spread: number;
   readonly spreadPc: number;
+  readonly updated: number;
 }

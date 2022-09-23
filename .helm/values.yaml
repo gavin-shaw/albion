@@ -5,3 +5,10 @@ mysql:
     resources:
       limits:
         memory: 8Gi
+redis:
+  auth:
+    enabled: false
+  replica:
+    replicaCount: 1
+    persistence:
+      enabled: false

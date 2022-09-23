@@ -26,6 +26,8 @@ spec:
               value: '{{ .Values.mysql.auth.rootPassword }}'            
             - name: MYSQL_PORT
               value: '3306'   
+            - name: REDIS_HOST
+              value: '{{ .Release.Name }}-redis-master'
           ports:
             - containerPort: 3001
               protocol: TCP
