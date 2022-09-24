@@ -15,12 +15,12 @@ export class MarketOrderService {
     private readonly configService: ConfigService,
   ) {}
 
-  async onModuleInit() {
+  onModuleInit() {
     if (this.configService.get('NODE_ENV') !== 'production') {
       return;
     }
 
-    await this.cleanOrders();
+    this.cleanOrders();
   }
 
   @Cron('0 0 */4 * * ')
