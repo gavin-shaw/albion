@@ -9,6 +9,7 @@ export type MarketItemSpread = Readonly<{
   minPrice: number;
   name: string;
   qualityLevel: number;
+  enchantmentLevel: number;
   spread: number;
   spreadPc: number;
   location: string;

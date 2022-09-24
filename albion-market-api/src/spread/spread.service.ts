@@ -18,7 +18,7 @@ export class SpreadService {
   ) {}
 
   async calculateSpreads(): Promise<MarketItemSpread[]> {
-    const maxBuyPrice = 100000;
+    const maxBuyPrice = 1000000;
     const minSpreadPc = 20;
     const minHistoryCount = 20;
 
@@ -27,9 +27,9 @@ export class SpreadService {
     console.log('Calculating spreads');
 
     const marketOrders = await this.cacheService.wrap(
-      'MARKET_ORDERS',
+      'MARKET_ORDERS_V3',
       () => query.getRawMany(),
-      { ttl: 0 },
+      { ttl: 500 },
     );
 
     console.log(`Retrieved ${marketOrders.length} market orders`);
@@ -43,7 +43,7 @@ export class SpreadService {
     console.log(`Grouped into ${items.length} unique items`);
 
     const salesMap = await this.cacheService.wrap(
-      `SALES_MAP_${maxBuyPrice}_${minSpreadPc}_${minHistoryCount}_V2`,
+      `SALES_MAP_${maxBuyPrice}_${minSpreadPc}_${minHistoryCount}_V4`,
       () => this.getSalesForItems(items, minHistoryCount),
       { ttl: 3600 },
     );
@@ -59,9 +59,10 @@ export class SpreadService {
         }
 
         return {
-          ...item,
           ...saleData,
-          location: LOCATION_NAMES[item.location] ?? item.location,
+          ...item,
+          location:
+            LOCATION_NAMES[item.locationId] ?? item.locationId.toString(),
           name: ITEM_NAMES[item.itemId],
         };
       })
@@ -79,7 +80,7 @@ export class SpreadService {
 
   private async getSalesForItems(items: MarketItem[], minHistoryCount: number) {
     const latestSale = await this.cacheService.wrap(
-      'LATEST_SALE',
+      'LATEST_SALE_V3',
       () =>
         this.marketHistoryRepository
           .find({
@@ -89,7 +90,7 @@ export class SpreadService {
             },
           })
           .then((results) => results[0]),
-      { ttl: 0 },
+      { ttl: 3600 },
     );
 
     const sales = await _(items)
@@ -109,7 +110,7 @@ export class SpreadService {
     return _(sales)
       .map((sale) => ({
         ...sale,
-        id: `${sale.locationId}-${sale.itemId}-${sale.qualityLevel}`,
+        id: `${sale.locationId}-${sale.itemId}-${sale.qualityLevel}-${sale.enchantmentLevel}`,
       }))
       .groupBy('id')
       .mapValues((values, key) => ({
@@ -142,10 +143,11 @@ export class SpreadService {
     return _(marketOrders)
       .map((rawOrder) => {
         const marketOrderGroup: MarketOrderGroup = {
-          id: `${rawOrder['order_location']}-${rawOrder['order_item_id']}-${rawOrder['order_quality_level']}`,
-          location: rawOrder['order_location'],
+          id: `${rawOrder['order_location_id']}-${rawOrder['order_item_id']}-${rawOrder['order_quality_level']}-${rawOrder['order_enchantment_level']}`,
+          locationId: rawOrder['order_location_id'],
           itemId: rawOrder['order_item_id'],
           qualityLevel: rawOrder['order_quality_level'],
+          enchantmentLevel: rawOrder['order_enchantment_level'],
           auctionType: rawOrder['order_auction_type'],
           maxPrice: Number(rawOrder['max_price']),
           minPrice: Number(rawOrder['min_price']),
@@ -176,8 +178,9 @@ export class SpreadService {
           id: values[0].id,
           itemId: values[0].itemId,
           qualityLevel: values[0].qualityLevel,
+          enchantmentLevel: values[0].enchantmentLevel,
           maxRequest,
-          location: values[0].location,
+          locationId: values[0].locationId,
           minOffer,
           spread: minOffer - maxRequest,
           spreadPc: ((minOffer - maxRequest) * 100) / maxRequest,
@@ -199,16 +202,17 @@ export class SpreadService {
         'order.itemId',
         'order.auctionType',
         'order.qualityLevel',
-        'order.location',
+        'order.locationId',
         'order.enchantmentLevel',
       ])
-      .addSelect('MAX(price)', 'max_price')
+      .addSelect('MAX(order.price)', 'max_price')
       .addSelect('MIN(order.price)', 'min_price')
       .addSelect('MAX(order.updated_at)', 'max_updated')
+      .where('order.location_id = 3008')
       .groupBy('order.itemId')
       .addGroupBy('order.auctionType')
       .addGroupBy('order.qualityLevel')
-      .addGroupBy('order.location')
+      .addGroupBy('order.locationId')
       .addGroupBy('order.enchantmentLevel');
   }
 }
@@ -217,11 +221,12 @@ class MarketItem {
   id: string;
   itemId: string;
   qualityLevel: number;
+  enchantmentLevel: number;
   maxRequest: number;
   minOffer: number;
   spread: number;
   spreadPc: number;
-  location: string;
+  locationId: number;
   updated: number;
 }
 
@@ -232,6 +237,7 @@ class MarketOrderGroup {
   auctionType: 'request' | 'offer';
   maxPrice: number;
   minPrice: number;
-  location: string;
+  locationId: number;
+  enchantmentLevel: number;
   updated: Date;
 }

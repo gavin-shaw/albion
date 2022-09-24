@@ -11,6 +11,7 @@ export class MarketItemSpreadDto {
   readonly minPrice: number;
   readonly name: string;
   readonly qualityLevel: number;
+  readonly enchantmentLevel: number;
   readonly spread: number;
   readonly spreadPc: number;
   readonly location: string;

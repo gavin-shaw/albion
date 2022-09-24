@@ -15,6 +15,7 @@ function getComparator(sortColumn: string): Comparator {
         return a[sortColumn].localeCompare(b[sortColumn]);
       };
     case "qualityLevel":
+    case "enchantmentLevel":
     case "minOffer":
     case "maxRequest":
     case "spread":
@@ -42,7 +43,9 @@ const HomeDataGrid: NextPage = () => {
     });
   }, []);
 
-  const rows = spreads.filter(it => it.location === 'Martlock Market' && it.historyCount > 40);
+  const rows = spreads.filter(
+    (it) => it.location === "Martlock Market" && it.historyCount > 40
+  );
 
   const sortedRows = useMemo((): readonly SpreadDto[] => {
     if (sortColumns.length === 0) return rows;
@@ -60,9 +63,14 @@ const HomeDataGrid: NextPage = () => {
   }, [rows, sortColumns]);
 
   const columns: Column<SpreadDto>[] = [
-    { key: "location", name: "Location" },
+    { key: "itemId", name: "Item Id" },
     { key: "name", name: "Name" },
-    { key: "qualityLevel", name: "Quality" },
+    {
+      key: "qualityLevel",
+      name: "Quality",
+      formatter: ({ row }) => QUALITY_NAMES[row.qualityLevel],
+    },
+    { key: "enchantmentLevel", name: "Enchantment" },
     {
       key: "minOffer",
       name: "Offer",
@@ -91,7 +99,6 @@ const HomeDataGrid: NextPage = () => {
     },
   ];
 
-
   return (
     <DataGrid
       columns={columns}
@@ -108,3 +115,12 @@ const HomeDataGrid: NextPage = () => {
 };
 
 export default HomeDataGrid;
+
+const QUALITY_NAMES = [
+  "",
+  "Normal",
+  "Good",
+  "Outstanding",
+  "Excellent",
+  "Masterpiece",
+];
