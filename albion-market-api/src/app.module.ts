@@ -8,6 +8,7 @@ import { MarketOrderModule } from './market-order/market-order.module';
 import { SharedModule } from './shared/shared.module';
 import { SpreadModule } from './spread/spread.module';
 import { NatsModule } from './nats/nats.module';
+import { FarmModule } from './farm/farm.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { NatsModule } from './nats/nats.module';
     SpreadModule,
     SharedModule,
     NatsModule,
+    FarmModule,
   ],
 })
 export class AppModule {}

@@ -20,6 +20,10 @@ export class NatsService {
   ) {}
 
   async onModuleInit() {
+    if (this.configService.get('NODE_ENV') !== 'production') {
+      return;
+    }
+
     this.connection = await connect({
       servers: this.configService.get('ALBION_NATS_HOST'),
       user: this.configService.get('ALBION_NATS_USER'),
@@ -31,6 +35,7 @@ export class NatsService {
       this.saveMarketHistory(data),
     );
   }
+
   private async saveMarketHistory(data: MarketHistoryDto) {
     const entities = [];
 

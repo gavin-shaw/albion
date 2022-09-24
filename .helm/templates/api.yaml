@@ -33,7 +33,7 @@ spec:
             - name: ALBION_NATS_USER
               value: public
             - name: ALBION_NATS_PASS
-              value: thenewalbiondata              
+              value: thenewalbiondata
           ports:
             - containerPort: 3001
               protocol: TCP
