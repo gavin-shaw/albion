@@ -40,3 +40,4 @@ lerna-debug.log*
 clear-values.yaml
 
 sync/data
+.env
